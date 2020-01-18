@@ -14,7 +14,8 @@
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "web3": "^1.2.5-rc.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,5 +42,8 @@
   "main": "index.js",
   "devDependencies": {},
   "author": "aswath",
-  "license": "ISC"
+  "license": "ISC",
+  "directories": {
+    "test": "test"
+  }
 }
