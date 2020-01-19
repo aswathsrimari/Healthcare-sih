@@ -113,9 +113,9 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar navbar-dark fixed-bottom bg-dark flex-md-nowrap p-0 shadow">
-          <ul className="navbar-nav px-3">
+          <ul className="navbar-nav px-5">
             <li className="nav-item text-nawrap d-none d-sm-none d-sm-block">
-              <small className="text-white">{this.state.account}</small>
+              <large className="text-white">YOUR ADDRESS==> {this.state.account}</large>
             
             </li>
           
