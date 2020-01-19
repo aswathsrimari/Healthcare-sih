@@ -4,10 +4,11 @@ import  {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import Home from './core/Home'
 import Dashboard from './user/UserDashboard';
+import AdminRoute from './auth/AdminRoute'
 
 import PatientDashboard from './user/AdminDashboard';
-
-import CreatePatient from './user/Patient'
+import Signin from './auth/index'
+import CreatePatient from './Patient'
 
 
 const Routes = ()=>{
@@ -15,8 +16,9 @@ const Routes = ()=>{
         <BrowserRouter>
         <Switch>
         <Route path="/" exact component={Home}/>
-            
-            <Route path="/user/dashboard" exact component={Dashboard} />
+        <Route path="/signin" exact component={Signin}/>
+
+            <AdminRoute path="/user/dashboard" exact component={Dashboard} />
             <Route path="/patient/dashboard" exact component={PatientDashboard}/>    
             <Route path="/create/patient" exact component={CreatePatient}/>    
 

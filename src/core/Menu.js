@@ -1,5 +1,8 @@
-import React, {ReactFragment, Fragment} from 'react'
+import React, {ReactFragment, Fragment,useState, useEffect} from 'react'
 import {Link, withRouter} from 'react-router-dom'
+import Web3 from 'web3'
+import HealthCare from '../build/contracts/HealthCare.json'
+import { bool } from 'prop-types';
 //withRouter will access Route history
 
 const isActive = (history, path)=>{   //history is current url and path is clicked link
@@ -11,7 +14,11 @@ const isActive = (history, path)=>{   //history is current url and path is click
     }
 }
 
-const Menu = ({history}) =>(
+
+const Menu = ({history}) =>{
+
+
+    return(
     <div>
         <ul className="nav nav-tab bg-primary">
             <li className="nav-item">
@@ -27,6 +34,7 @@ const Menu = ({history}) =>(
         
          </ul>
     </div>
-)
+    );
+}
 
 export default withRouter(Menu);

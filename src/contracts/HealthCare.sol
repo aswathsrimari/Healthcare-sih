@@ -14,6 +14,8 @@ contract HealthCare {
         string name;
         uint age;
         string disease;
+        string description;
+        string ehrhash;
     }
     uint public doctorsCount = 0;
     uint public patientsCount = 0;
@@ -27,9 +29,10 @@ contract HealthCare {
         else {
             return false;
         }
-    }
-
-    function getDoctorsCount() public view returns (uint) {
+    } 
+    
+    
+   function getDoctorsCount() public view returns (uint) {
         return doctorsCount;
     }
 
@@ -37,7 +40,7 @@ contract HealthCare {
         return doctors[doc_id].myPatients[pos];
     }
 
-    function sendDetails(string memory name, uint age, string memory disease) public {
+    function sendDetails(string memory name, uint age, string memory disease,string memory des,string memory Hash) public {
         uint doc_id;
         for(uint i = 0;i<doctorsCount;i++){
             if(doctors[i].myaddress==msg.sender){
@@ -45,7 +48,7 @@ contract HealthCare {
                 break;
             }
         }
-        doctors[doc_id].myPatients[++doctors[doc_id].myPatientsCount] = Patient(msg.sender,name,age,disease);
+        doctors[doc_id].myPatients[++doctors[doc_id].myPatientsCount] = Patient(msg.sender,name,age,disease,des,Hash);
     }
 
     function check() public view returns (bool) {
