@@ -58,6 +58,7 @@ const CreatePatient = ()=>{
 
       const addToBlockchain = () =>{
         if(submit){
+          console.log(name,age,disease,description,ehrHash,account)
           contract.methods.sendDetails(name,age,disease,description,ehrHash).send({from : account}).then((r)=>{
             setValues({...values,ehrHash:ehrHash})
           })

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import {Link} from 'react-router-dom';
 import Layout from '../core/Layout'
 import Web3 from 'web3';
 import HealthCare from "../build/contracts/HealthCare.json";
@@ -34,6 +35,7 @@ const Signin=()=>{
 
      useEffect(()=>{
         addToBlockchain();
+        RedirectTo();
      },[submit])
 
      const displayValues = () =>{
@@ -50,7 +52,12 @@ const Signin=()=>{
           
         }
       }
-
+      const RedirectTo =()=>{
+        if(submit){
+        return(
+          <Link className="nav-link" to="/">Click to Enter</Link>)
+        }
+      }
     
     async function loadBlockchainData(){
         const web3 = window.web3;
@@ -130,7 +137,7 @@ const Signin=()=>{
                 <input onChange={handleChange('designation')} type="text" className="form-control" value={designation}/>     
             
             </div>
-            <button className="btn btn-outline-primary">Create Patient</button>
+            <button className="btn btn-outline-primary">Create Doctor</button>
 
 
         </form>
@@ -143,6 +150,7 @@ const Signin=()=>{
             <div className="col-md-8 offset-md-2">
            
              {newPostForm()}
+             {RedirectTo()}
             </div>
         
         </div>
