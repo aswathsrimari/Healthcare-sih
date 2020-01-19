@@ -48,6 +48,7 @@ const Signin=()=>{
           console.log(name,age,designation,account);
           contract.methods.addDoctors(name,age,designation).send({from : account}).then((r)=>{
             setValues({...values})
+            console.log("TRANSACTION",r);
           })
           
         }

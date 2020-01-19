@@ -28,6 +28,11 @@ const Menu = ({history}) =>{
             {true && (
                 <li className="nav-item">
                 <Link className="nav-link" style={isActive(history, '/user/dashboard')} to="/user/dashboard">Dashboard</Link> 
+            </li>)}
+
+            {true && (
+                <li className="nav-item">
+                <Link className="nav-link" style={isActive(history, '/signin')} to="/signin">Sign in</Link> 
             </li>
             )}
 

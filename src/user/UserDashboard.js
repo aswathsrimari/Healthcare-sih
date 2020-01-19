@@ -28,14 +28,12 @@ class Dashboard extends Component{
         await this.loadWeb3();
         await this.loadBlockchainData();
     }   
-    componentDidMount(){
-        this.getFromBlockchain();
-    }
+  
     
 
-        getFromBlockchain (){
+       async getFromBlockchain(){
             if(this.state.submit){
-                const res = this.state.contract.methods.getDoctorsCount().call();
+                const res = await this.state.contract.methods.getDoctorsCount().call();
                 console.log("res",res);
                 this.setState({
                     ans:res
@@ -66,6 +64,12 @@ class Dashboard extends Component{
                     contract:contract,
                     submit: true
                 })
+                const res = await this.state.contract.methods.getDoctorsCount().call();
+                console.log("res",res);
+                this.setState({
+                    ans:res
+                });
+
                 
                 //console.log(values);
              // const HealthCareHash = await contract.methods.get().call()
@@ -96,10 +100,11 @@ class Dashboard extends Component{
           }
         
    
-    patientinfo(){
+    patientinfo(){  
             return(
+                
                 <div className="card- mb-5">
-                <h3 className="card-header">{this.state.address}</h3>
+                <h3 className="card-header">{this.state.ans}</h3>
                 <ul className="list-group">
     
                    <li className="list-group-item">name</li>
@@ -141,6 +146,8 @@ class Dashboard extends Component{
     
                     </div>
                     <div>
+
+
                    {this.patientinfo()}
                    
                     </div>

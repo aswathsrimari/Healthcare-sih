@@ -1,39 +1,42 @@
-import React, { Component, useState, useEffect } from 'react'
-import {Route, Redirect} from 'react-router-dom'
+import React, { Component, useState, useEffect, useLayoutEffect } from 'react'
+import {Link} from 'react-router-dom'
 import Web3 from 'web3'
 import HealthCare from '../build/contracts/HealthCare.json'
 import { async } from 'q'
+import { thisExpression } from '@babel/types'
 
 
 
 
-const AdminRoute = ({component: Component, ...rest})=>{
+class AdminRoute extends Component{
 
-  const [Bool,setBool] = useState();
-  const [account,setAccount] = useState();
-  const [contract,setContract] = useState();
 
- 
-  const checkDoctor = () =>{
-    return Bool;
+    constructor(props){
+        super(props);
+        this.state={
+            Bool:'',
+            account:'',
+            contract:'',
+        }
+        this.RedirectTo = this.RedirectTo.bind(this);
+    }
+
+
+  async componentWillMount(){
+      await this.loadWeb3();
+      await this.loadBlockchainData();
   }
-
-  useEffect(()=>{
-    loadWeb3();
-    loadBlockchainData();
-  },[])
-
-  useEffect(()=>{
-    console.log("BOOL",Bool);
-      checkDoctor();
-  },[Bool])
-
-  async function loadBlockchainData(){
+  
+  
+    async loadBlockchainData(){
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts()
     //console.log(accounts[0])
     const acc= accounts[0];
-    setAccount(acc);
+    console.log("Add",acc)
+    this.setState({
+        account:acc
+    })
     //console.log(account)
     //console.log("gg");
     const networkId = await web3.eth.net.getId()
@@ -43,10 +46,17 @@ const AdminRoute = ({component: Component, ...rest})=>{
       const address = networkData.address
 //fetch contract
       const contract = new web3.eth.Contract(abi, address)
-      setContract(contract);
+        this.setState({
+            contract:contract
+        })
       const res = await contract.methods.check().call();
       console.log("Res",res);
-      setBool(true);
+      //setBool(res);
+      this.setState({
+          Bool:res,
+      })
+      
+    
       //console.log(values);
      // const HealthCareHash = await contract.methods.get().call()
       //this.setState({
@@ -64,7 +74,7 @@ const AdminRoute = ({component: Component, ...rest})=>{
   }
   
 
-  async function loadWeb3() {
+  async loadWeb3() {
     if(window.ethereum){
       window.web3 = new Web3(window.ethereum)
       await window.ethereum.enable()
@@ -75,25 +85,37 @@ const AdminRoute = ({component: Component, ...rest})=>{
     }
   }
 
-
-
-
-
-return(
-  <Route 
-     {...rest} 
-     render={props => true ? (
-        <Component {...props} />
-    ) : (
-        <Redirect to={{
-            pathname: "/signin",
-            state: {from: props.location}
-        }} />
-
-    )}
-    />
-  );
+  RedirectTo(){
+    if(this.state.Bool){
+    return(
+      <Link className="nav-link" to="/user/dashboardhere">Click to Enter dashboard</Link>)
+    }
+    else{
+      return(
+        <Link className="nav-link" to="/signin">Click to signin</Link>)
+      }
+    }
   
-  };
+
+
+
+
+render(){
+
+  return(
+    <div>
+    
+    Loading...
+
+    {this.RedirectTo()}
+    </div>
+
+
+
+  )
+    
+}
+
+};
 
 export default AdminRoute;

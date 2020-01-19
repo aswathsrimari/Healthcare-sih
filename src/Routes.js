@@ -17,8 +17,9 @@ const Routes = ()=>{
         <Switch>
         <Route path="/" exact component={Home}/>
         <Route path="/signin" exact component={Signin}/>
+        <Route path="/user/dashboardhere" exact component={Dashboard} />
 
-            <AdminRoute path="/user/dashboard" exact component={Dashboard} />
+            <AdminRoute path="/user/dashboard" exact component={AdminRoute} />
             <Route path="/patient/dashboard" exact component={PatientDashboard}/>    
             <Route path="/create/patient" exact component={CreatePatient}/>    
 

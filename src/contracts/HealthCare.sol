@@ -2,7 +2,6 @@ pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 contract HealthCare {
     struct Doctor{
-        address myaddress;
         string name;
         uint age;
         string field;
@@ -10,7 +9,7 @@ contract HealthCare {
         mapping(uint=>Patient) myPatients;
     }
     struct Patient {
-        address docaddress;
+        address myDocAddress;
         string name;
         uint age;
         string disease;
@@ -18,44 +17,45 @@ contract HealthCare {
         string ehrhash;
     }
     uint public doctorsCount = 0;
-    uint public patientsCount = 0;
-    mapping(uint=>Doctor) public doctors;
+    mapping(address=>Doctor) public doctors;
     mapping(address=>bool) public added;
-    function addDoctors(string memory name, uint age, string memory field) public returns (bool result){
+    mapping(uint=>address) public index;
+    function addDoctors(string memory name, uint age, string memory field) public {
         if(added[msg.sender]!=true) {
-            doctors[++doctorsCount] = Doctor(msg.sender,name,age,field,0);
-            return true;
+            doctors[msg.sender] = Doctor(name,age,field,0);
+            added[msg.sender] = true;
+            index[++doctorsCount] = msg.sender;
         }
-        else {
-            return false;
-        }
-    } 
-    
-    
+    }
    function getDoctorsCount() public view returns (uint) {
         return doctorsCount;
     }
 
-    function getMyPatients(uint doc_id, uint pos) public view returns (Patient memory){
-        return doctors[doc_id].myPatients[pos];
+    function getDoctors(uint pos) public view returns (string memory) {
+        return doctors[index[pos]].name;
     }
 
-    function sendDetails(string memory name, uint age, string memory disease,string memory des,string memory Hash) public {
-        uint doc_id;
-        for(uint i = 0;i<doctorsCount;i++){
-            if(doctors[i].myaddress==msg.sender){
-                doc_id = i;
-                break;
-            }
+    function getMyPatientsCount() public view returns (uint) {
+        return doctors[msg.sender].myPatientsCount;
+    }
+
+    function getMyPatients(uint pos) public view returns (Patient memory) {
+        return doctors[msg.sender].myPatients[pos];
+    }
+
+    function addPatients(string memory name, uint age, string memory disease,string memory des,string memory Hash) public {
+        doctors[msg.sender].myPatients[++doctors[msg.sender].myPatientsCount] = Patient(msg.sender,name,age,disease,des,Hash);
+    }
+
+    function sendDetails(string memory name, uint age, string memory disease, string memory des, string memory Hash, address docAddress) public {
+            if(added[docAddress]==true) {
+                doctors[docAddress].myPatients[++doctors[docAddress].myPatientsCount] = Patient(docAddress, name, age, disease, des, Hash);
         }
-        doctors[doc_id].myPatients[++doctors[doc_id].myPatientsCount] = Patient(msg.sender,name,age,disease,des,Hash);
     }
 
     function check() public view returns (bool) {
-        for(uint i = 0;i<doctorsCount;i++) {
-            if(doctors[i].myaddress==msg.sender) {
-                return true;
-            }
+        if(added[msg.sender]==true){
+            return true;
         }
         return false;
     }
