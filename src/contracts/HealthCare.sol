@@ -47,9 +47,10 @@ contract HealthCare {
         doctors[msg.sender].myPatients[++doctors[msg.sender].myPatientsCount] = Patient(msg.sender,name,age,disease,des,Hash);
     }
 
-    function sendDetails(string memory name, uint age, string memory disease, string memory des, string memory Hash, address docAddress) public {
-            if(added[docAddress]==true) {
-                doctors[docAddress].myPatients[++doctors[docAddress].myPatientsCount] = Patient(docAddress, name, age, disease, des, Hash);
+    function sendDetails(string memory name, uint age, string memory disease, string memory des, string memory Hash, uint pos) public {
+        address docAddress = index[pos];
+        if(added[docAddress]==true) {
+            doctors[docAddress].myPatients[++doctors[docAddress].myPatientsCount] = Patient(docAddress, name, age, disease, des, Hash);
         }
     }
 

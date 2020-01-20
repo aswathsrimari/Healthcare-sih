@@ -3,6 +3,7 @@ import Layout from '../core/Layout'
 import {Link} from 'react-router-dom'
 import Web3 from 'web3';
 import HealthCare from "../build/contracts/HealthCare.json";
+import Doctor from './Doctor' 
 import { setServers } from 'dns';
 import { render } from '@testing-library/react';
 
@@ -23,7 +24,9 @@ class Dashboard extends Component{
             disease:'',
             description:'',
             ehrHash:'',
-            count:''
+            count:'',
+            doctorsCount:'',
+            clicked: false
         }
         this.userLinks = this.userLinks.bind(this);
         this.patientinfo = this.patientinfo.bind(this);
@@ -78,6 +81,11 @@ class Dashboard extends Component{
                     count: count,
                     temp:1
                 })
+                const dc = await this.state.contract.methods.getDoctorsCount().call();
+                this.setState({
+                    doctorsCount:dc
+                })   
+                console.log(dc);
                 
                 //console.log(count)
                 this.state.contract.methods.getMyPatients(this.state.temp).call({from: this.state.address}).then((r)=>{
@@ -125,8 +133,9 @@ class Dashboard extends Component{
         
     sendToDoctor(){
         console.log("Share with other doctors");
-
-
+        this.setState({
+            clicked:true
+        })
 
     }
     viewPatients(){
@@ -186,7 +195,9 @@ class Dashboard extends Component{
 
                    <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.sendToDoctor}>SEND</button></li>
                    <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.viewPatients} type="submit">NEXT</button></li>
-                   <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.viewPrevPatients} type="submit">PREV</button></li>
+                   <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.viewPrevPatients} 
+                   type="submit">PREV</button></li>
+                   {this.state.clicked ? <Doctor count={this.state.doctorsCount} contract={this.state.contract} address={this.state.address} /> : null}
 
 
                 </ul>
