@@ -185,7 +185,7 @@ class Dashboard extends Component{
             return(
                 
                 <div className="card- mb-5">
-                <h3 className="card-header">Name: {this.state.name}</h3>
+                <h3 className="card-header">Patient Name: {this.state.name}</h3>
                 <ul className="list-group">
     
                    <li className="list-group-item">Age: {this.state.age}</li>
@@ -193,11 +193,14 @@ class Dashboard extends Component{
                    <li className="list-group-item">Description: {this.state.description}</li>
                    <img src={`https://ipfs.infura.io/ipfs/${this.state.ehrHash}`} className="App-logo" alt="EHR RECORD" />
 
-                   <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.sendToDoctor}>SEND</button></li>
+                   <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.sendToDoctor}>SEND TO DOCTOR</button></li>
                    <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.viewPatients} type="submit">NEXT</button></li>
                    <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.viewPrevPatients} 
                    type="submit">PREV</button></li>
-                   {this.state.clicked ? <Doctor count={this.state.doctorsCount} contract={this.state.contract} address={this.state.address} /> : null}
+                   {this.state.clicked ? <Doctor count={this.state.doctorsCount} contract={this.state.contract} 
+                   name={this.state.name} age={this.state.age} disease={this.state.disease} description={this.state.description}
+                   ehrHash={this.state.ehrHash}
+                   address={this.state.address} /> : null}
 
 
                 </ul>

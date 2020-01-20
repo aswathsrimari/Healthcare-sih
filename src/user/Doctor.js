@@ -12,9 +12,16 @@ class Doctor extends Component{
            doctorCount:props.count,
            contract: props.contract,
            address: props.address,
-           doct :[]
+           name:props.name,
+            age:props.age,
+            disease:props.disease,
+            description:props.description,
+            ehrHash:props.ehrHash,
+            doct :[],
+            done:false
        }
        this.getDoctor = this.getDoctor.bind(this);
+       this.shareToDoctor = this.shareToDoctor.bind(this);
     }
 
     componentWillMount(){
@@ -49,6 +56,17 @@ class Doctor extends Component{
           
         )
     }
+    shareToDoctor(event){
+        const val = event.target.value;
+        console.log(val)
+        this.state.contract.methods.sendDetails(this.state.name,this.state.age,this.state.disease,this.state.description,this.state.ehrHash,val)
+        .send({from:this.state.address}).then((r)=>{
+            console.log("Transaction", r);
+            this.setState({
+                done:true
+            })
+        })
+    }
 
     render(){
 
@@ -58,10 +76,13 @@ class Doctor extends Component{
                 <div className="row">
                     <div className="col-9">
                     <ul>
-                    {this.state.doct.map((name,i) => <li className="list-group-item">{i+1}: {name}</li>)}
+                    List of Doctors:    
+                    {this.state.doct.map((name,i) => <li className="list-group-item"><button type="submit" className="btn btn-outline-primary" 
+                    onClick={this.shareToDoctor} value={i+1}>{i+1}: {name}</button></li>
+                    )}
+                    {this.state.done && (<li className="list-group-item">Sent sucessfully</li>)}           
 
                     </ul>
-                     {this.doctorsInfo()}           
                     </div>
                 </div>
             )
