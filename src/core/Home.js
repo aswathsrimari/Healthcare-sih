@@ -31,16 +31,13 @@ const Home = () => {
     // },[])
 
     return(
-        <Layout title="Home Page" description="HEALTHCARE UNIT" className="container-fluid">
+        <Layout title="Home Page" description="Good day! Welcome to our completely decentralized HEALTHCARE application!" className="container-fluid">
            
-        <h2 className="mb-4">Click your designation</h2>
+        <h2 className="mb-4">Get started with our decentralized application</h2>
             <div className="row">
         <ul className="list-group">
             <li className="list-group-item">
-            <Link className="nav-link" to="/user/dashboard">Doctor</Link>
-            </li>
-            <li className="list-group-item">
-            <Link className="nav-link" to="/patient/dashboard">Patient</Link>                
+            <Link className="nav-link" to="/user/dashboard">USER Sign Up/Login</Link>
             </li>
 
          </ul>

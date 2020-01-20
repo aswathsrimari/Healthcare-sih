@@ -1,4 +1,6 @@
 import React, { Component, useState, useEffect, useLayoutEffect } from 'react'
+import Layout from '../core/Layout'
+
 import {Link} from 'react-router-dom'
 import Web3 from 'web3'
 import HealthCare from '../build/contracts/HealthCare.json'
@@ -88,14 +90,28 @@ class AdminRoute extends Component{
   RedirectTo(){
     if(this.state.Bool){
     return(
-      <Link className="nav-link" to="/user/dashboardhere">Click to Enter dashboard</Link>)
+      <Layout title="You are already signed up!" description={`Click on the below link to view dashboard!`} >
+        <div className="row">
+            <div className="col-md-8 offset-md-2">
+            <Link className="nav-link" to="/user/dashboardhere">Click to Enter dashboard</Link>
+
+            </div>
+        
+        </div>
+    </Layout>)
     }
     else{
       return(
-        <Link className="nav-link" to="/signin">Click to signin</Link>)
-      }
+        <Layout title="Ooops!You are not signed up" description={`Click on the below link to Sign up!`} >
+        <div className="row">
+            <div className="col-md-8 offset-md-2">
+            <Link className="nav-link" to="/signin">Click to signin</Link>
+            </div>
+        
+        </div>
+    </Layout>)
     }
-  
+  }
 
 
 
@@ -104,8 +120,6 @@ render(){
 
   return(
     <div>
-    
-    Loading...
 
     {this.RedirectTo()}
     </div>
