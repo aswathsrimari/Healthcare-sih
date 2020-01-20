@@ -49,7 +49,7 @@ class AdminRoute extends Component{
         this.setState({
             contract:contract
         })
-      const res = await contract.methods.check().call();
+      const res = await contract.methods.check().call({from: this.state.account});
       console.log("Res",res);
       //setBool(res);
       this.setState({

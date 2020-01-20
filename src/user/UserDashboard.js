@@ -17,10 +17,19 @@ class Dashboard extends Component{
             address:'',
             contract:'',
             submit:'',
-            ans:''
+            ans:'',
+            name:'',
+            age:'',
+            disease:'',
+            description:'',
+            ehrHash:'',
+            count:''
         }
         this.userLinks = this.userLinks.bind(this);
         this.patientinfo = this.patientinfo.bind(this);
+        this.sendToDoctor = this.sendToDoctor.bind(this);
+        this.viewPatients = this.viewPatients.bind(this);
+        this.viewPrevPatients = this.viewPrevPatients.bind(this);
         
     }
     
@@ -64,11 +73,26 @@ class Dashboard extends Component{
                     contract:contract,
                     submit: true
                 })
-                const res = await this.state.contract.methods.getDoctorsCount().call();
-                console.log("res",res);
+                const count = await this.state.contract.methods.getMyPatientsCount().call({from: this.state.address});
                 this.setState({
-                    ans:res
+                    count: count,
+                    temp:1
+                })
+                
+                //console.log(count)
+                this.state.contract.methods.getMyPatients(this.state.temp).call({from: this.state.address}).then((r)=>{
+                    this.setState({
+                        name:r[1],
+                        age:r[2],
+                        disease:r[3],
+                        description:r[4],
+                        ehrHash:r[5]
+                    })
                 });
+                // console.log("res",res);
+                // this.setState({
+                //     ans:res
+                // });
 
                 
                 //console.log(values);
@@ -99,18 +123,72 @@ class Dashboard extends Component{
             }
           }
         
+    sendToDoctor(){
+        console.log("Share with other doctors");
+
+
+
+    }
+    viewPatients(){
+        if(this.state.temp<=this.state.count){
+            this.setState({
+                temp:this.state.temp+1
+            })
+        this.state.contract.methods.getMyPatients(this.state.temp).call({from: this.state.address}).then((r)=>{
+            this.setState({
+                name:r[1],
+                age:r[2],
+                disease:r[3],
+                description:r[4],
+                ehrHash:r[5]
+            })
+        });
+    }
+    else{
+        console.log("no more patients")
+    }
+        
+
+    }
+    viewPrevPatients(){
+        if(this.state.temp>=0){
+            this.setState({
+                temp:this.state.temp-1
+            })
+        this.state.contract.methods.getMyPatients(this.state.temp).call({from: this.state.address}).then((r)=>{
+            this.setState({
+                name:r[1],
+                age:r[2],
+                disease:r[3],
+                description:r[4],
+                ehrHash:r[5]
+            })
+        });
+    }
+    else{
+        console.log("no more patients")
+    }
+        
+
+    }
    
     patientinfo(){  
             return(
                 
                 <div className="card- mb-5">
-                <h3 className="card-header">{this.state.ans}</h3>
+                <h3 className="card-header">Name: {this.state.name}</h3>
                 <ul className="list-group">
     
-                   <li className="list-group-item">name</li>
-                   <li className="list-group-item">age</li>
-                   <li className="list-group-item">disease</li>
-                   <li className="list-group-item">description</li>
+                   <li className="list-group-item">Age: {this.state.age}</li>
+                   <li className="list-group-item">Disease: {this.state.disease}</li>
+                   <li className="list-group-item">Description: {this.state.description}</li>
+                   <img src={`https://ipfs.infura.io/ipfs/${this.state.ehrHash}`} className="App-logo" alt="EHR RECORD" />
+
+                   <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.sendToDoctor}>SEND</button></li>
+                   <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.viewPatients} type="submit">NEXT</button></li>
+                   <li className="list-group-item"><button className="btn btn-outline-primary" onClick={this.viewPrevPatients} type="submit">PREV</button></li>
+
+
                 </ul>
                </div>
               
